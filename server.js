@@ -8,6 +8,10 @@ app.get('/', (req, res, next) => {
 })
 
 
+// Add middware for parsing request bodies here:
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
+
 const apiRouter = require('./server/api')
 app.use('/api', apiRouter)
 
