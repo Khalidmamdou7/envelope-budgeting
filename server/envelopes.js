@@ -18,4 +18,12 @@ envelopesRouter.post('/', (req, res, next) => {
 envelopesRouter.get('/', (req, res, next) => {
     res.send(envelopes);
 })
+
+envelopesRouter.get('/:envelopeId', (req, res, next) => {
+    if (envelopesCounter == 1 || req.params.envelopeId < 1 || req.params.envelopeId > envelopesCounter){
+        res.sendStatus(404);
+    } else {
+        res.send(envelopes[req.params.envelopeId - 1]);
+    }
+});
 module.exports = envelopesRouter;
