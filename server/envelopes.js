@@ -50,6 +50,24 @@ envelopesRouter.put('/:envelopeId', (req, res, next) => {
     
 })
 
+envelopesRouter.delete('/:envelopeId', (req, res, next) => {
+    try {
+        const {envelopeId} = req.params;
+        const envelopeIndex = envelopes.findIndex((e) => {
+            return e.id == envelopeId;
+        })
+        if (envelopeIndex != -1){
+            envelopes.splice(envelopeIndex, 1);
+            res.sendStatus(204);
+        } else {
+            res.sendStatus(404);
+        }
+    } catch (err) {
+        res.status(500).send(err);
+    }
+    
+})
+
 
 
 
