@@ -1,5 +1,5 @@
-# Personal Budget
-As simple CRUD API that allows clients to create and manage a personal budget using Envelope Budgeting principles. It allow users to manage budget envelopes and track the balance of each envelope.
+# Envelope Budgeting
+A simple CRUD API that allows clients to create and manage a personal budget using Envelope Budgeting principles. It allow users to manage budget envelopes and track the balance of each envelope.
 
 # Technologies
 - Node.js Express
