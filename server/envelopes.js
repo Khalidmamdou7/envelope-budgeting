@@ -1,7 +1,6 @@
 const envelopesRouter = require('express').Router();
 
 
-
 let envelopes = [];
 let envelopesCounter = 1;
 
@@ -20,10 +19,18 @@ envelopesRouter.get('/', (req, res, next) => {
 })
 
 envelopesRouter.get('/:envelopeId', (req, res, next) => {
-    if (envelopesCounter == 1 || req.params.envelopeId < 1 || req.params.envelopeId > envelopesCounter){
-        res.sendStatus(404);
+    const {envelopeId} = req.params;
+    const envelope = envelopes.filter((e) => {
+        return e.id == envelopeId;
+    })
+    if (envelope.length){
+        res.status(200).send(envelope);
     } else {
-        res.send(envelopes[req.params.envelopeId - 1]);
+        res.sendStatus(404);
     }
-});
+})
+
+
+
+
 module.exports = envelopesRouter;
