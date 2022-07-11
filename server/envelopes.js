@@ -8,55 +8,11 @@ envelopesRouter.post('/', db.createEnvelope);
 
 envelopesRouter.get('/', db.getEnvelopes);
 
-envelopesRouter.get('/:envelopeId', (req, res, next) => {
-    const {envelopeId} = req.params;
-    const envelope = envelopes.filter((e) => {
-        return e.id == envelopeId;
-    })
-    if (envelope.length){
-        res.status(200).send(envelope[0]);
-    } else {
-        res.sendStatus(404);
-    }
-})
+envelopesRouter.get('/:envelopeId', db.getEnvelopeById);
 
-envelopesRouter.put('/:envelopeId', (req, res, next) => {
-    try {
-        const {envelopeId} = req.params;
-        const envelope = envelopes.filter((e) => {
-            return e.id == envelopeId;
-        })
-        if (envelope.length){
-            const {title, budget} = req.body;
-            envelope[0].title = title;
-            envelope[0].budget = budget;
-            res.status(201).send(envelope[0]);
-        } else {
-            res.sendStatus(404);
-        }
-    } catch (err) {
-        res.status(500).send(err);
-    }
-    
-})
+envelopesRouter.put('/:envelopeId', db.updateEnvelope);
 
-envelopesRouter.delete('/:envelopeId', (req, res, next) => {
-    try {
-        const {envelopeId} = req.params;
-        const envelopeIndex = envelopes.findIndex((e) => {
-            return e.id == envelopeId;
-        })
-        if (envelopeIndex != -1){
-            envelopes.splice(envelopeIndex, 1);
-            res.sendStatus(204);
-        } else {
-            res.sendStatus(404);
-        }
-    } catch (err) {
-        res.status(500).send(err);
-    }
-    
-})
+envelopesRouter.delete('/:envelopeId', db.deleteEnvelope);
 
 envelopesRouter.post('/transfer/:from/:to', (req, res, next) => {
     try {

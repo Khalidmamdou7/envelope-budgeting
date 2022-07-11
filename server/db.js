@@ -18,11 +18,64 @@ const getEnvelopes = (req, res) => {
 
 const createEnvelope = (req, res) => {
     const {title, budget} = req.body;
-    // todo
+    pool.query('INSERT INTO envelopes (title, budget) values ($1, $2) returning *', [title, budget], (error, results) => {
+        if (error){
+            res.send(error.json);
+            // throw error;
+        }
+        res.status(201).send(`Envelope added with ID: ${results.rows[0].id}`);
+    })
+}
+
+const getEnvelopeById = (req, res) => {
+    const id = parseInt(req.params.envelopeId);
+    pool.query(
+        'SELECT * from envelopes where id = $1', [id],
+        (error, results) => {
+            if (error){
+                throw error;
+            }
+            if (results.rowCount > 0){
+                res.status(200).json(results.rows);
+            } else {
+                res.sendStatus(404);
+            }
+        }
+    )
+
+}
+
+const updateEnvelope = (req, res) => {
+    const id = parseInt(req.params.envelopeId);
+    const {title, budget} = req.body;
+    pool.query(
+        'UPDATE envelopes set title = $1, budget = $2 where id = $3', 
+        [title, budget,  id],
+        (error, results) => {
+            if (error){
+                throw error;
+            }
+            res.status(201).send(`Envelope modified with id: ${id}`);
+        }
+    )
+}
+
+const deleteEnvelope = (req, res) => {
+    const id = parseInt(req.params.envelopeId);
+
+    pool.query('DELETE FROM envelopes WHERE id = $1', [id], (error, results) => {
+        if (error) {
+          throw error;
+        }
+        res.status(200).send(`Envelope deleted with ID: ${id}`);
+      })
 }
 
 module.exports = {
     getEnvelopes,
     createEnvelope,
+    getEnvelopeById,
+    updateEnvelope,
+    deleteEnvelope
 };
 
