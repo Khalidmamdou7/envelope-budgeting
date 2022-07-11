@@ -15,6 +15,7 @@ CREATE TABLE "transactions" (
   "id" SERIAL PRIMARY KEY,
   "username" varchar not null,
   "value" int not null,
+  "envelope_id" int not null,
   "time" timestamp
 );
 
@@ -30,11 +31,9 @@ CREATE TABLE "transactions_envelopes" (
   PRIMARY Key(envelope_id, transaction_id)
 );
 
-ALTER TABLE "users" ADD FOREIGN KEY ("username") REFERENCES "transaction" ("username");
+ALTER TABLE "transactions" ADD FOREIGN KEY ("username") REFERENCES "users" ("username");
 
-ALTER TABLE "transaction_envelopes" ADD FOREIGN KEY ("transaction_id") REFERENCES "transaction" ("id");
-
-ALTER TABLE "transaction_envelopes" ADD FOREIGN KEY ("envelope_id") REFERENCES "envelopes" ("id");
+ALTER TABLE "transactions" ADD FOREIGN KEY ("envelope_id") REFERENCES "envelopes" ("id");
 
 ALTER TABLE "envelopes_users" ADD FOREIGN KEY ("username") REFERENCES "users" ("username");
 
