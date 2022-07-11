@@ -1,22 +1,12 @@
 const envelopesRouter = require('express').Router();
-
+const db = require('./db');
 
 let envelopes = [];
 let envelopesCounter = 1;
 
-envelopesRouter.post('/', (req, res, next) => {
-    const newEnvelope = {
-        id: envelopesCounter++,
-        title: req.body.title,
-        budget: req.body.budget
-    }
-    envelopes.push(newEnvelope);
-    res.status(201).send(newEnvelope);
-})
+envelopesRouter.post('/', db.createEnvelope);
 
-envelopesRouter.get('/', (req, res, next) => {
-    res.send(envelopes);
-})
+envelopesRouter.get('/', db.getEnvelopes);
 
 envelopesRouter.get('/:envelopeId', (req, res, next) => {
     const {envelopeId} = req.params;
