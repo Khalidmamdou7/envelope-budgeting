@@ -1,5 +1,5 @@
 const envelopesRouter = require('express').Router();
-const db = require('./db');
+const db = require('../db');
 
 let envelopes = [];
 let envelopesCounter = 1;
@@ -43,8 +43,6 @@ envelopesRouter.post('/transfer/:from/:to', (req, res, next) => {
     }
     
 })
-
-envelopesRouter.post('/transaction', db.transaction);
 
 
 

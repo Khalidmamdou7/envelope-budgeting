@@ -70,7 +70,7 @@ const deleteEnvelope = (req, res) => {
       })
 }
 
-const transaction = (req, res) => {
+const createTransaction = (req, res) => {
     const {username, value, envelopeId} = req.body;
 
     pool.query(
@@ -91,6 +91,6 @@ module.exports = {
     getEnvelopeById,
     updateEnvelope,
     deleteEnvelope, 
-    transaction,
+    createTransaction,
 };
 
