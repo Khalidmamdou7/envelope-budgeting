@@ -25,12 +25,6 @@ CREATE TABLE "envelopes_users" (
   PRIMARY Key(envelope_id, username)
 );
 
-CREATE TABLE "transactions_envelopes" (
-  "envelope_id" int,
-  "transaction_id" int,
-  PRIMARY Key(envelope_id, transaction_id)
-);
-
 ALTER TABLE "transactions" ADD FOREIGN KEY ("username") REFERENCES "users" ("username");
 
 ALTER TABLE "transactions" ADD FOREIGN KEY ("envelope_id") REFERENCES "envelopes" ("id");
@@ -38,3 +32,13 @@ ALTER TABLE "transactions" ADD FOREIGN KEY ("envelope_id") REFERENCES "envelopes
 ALTER TABLE "envelopes_users" ADD FOREIGN KEY ("username") REFERENCES "users" ("username");
 
 ALTER TABLE "envelopes_users" ADD FOREIGN KEY ("envelope_id") REFERENCES "envelopes" ("id");
+
+CREATE FUNCTION env_transaction() RETURNS trigger AS $env_transaction$
+    BEGIN
+        UPDATE envelopes set budget = budget - NEW.value WHERE id = NEW.envelope_id;
+        return NEW;
+    END;
+$env_transaction$ LANGUAGE plpgsql;
+
+CREATE TRIGGER env_transaction BEFORE INSERT OR UPDATE ON transactions
+    FOR EACH ROW EXECUTE FUNCTION env_transaction();

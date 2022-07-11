@@ -20,8 +20,7 @@ const createEnvelope = (req, res) => {
     const {title, budget} = req.body;
     pool.query('INSERT INTO envelopes (title, budget) values ($1, $2) returning *', [title, budget], (error, results) => {
         if (error){
-            res.send(error.json);
-            // throw error;
+            throw error;
         }
         res.status(201).send(`Envelope added with ID: ${results.rows[0].id}`);
     })
@@ -71,11 +70,27 @@ const deleteEnvelope = (req, res) => {
       })
 }
 
+const transaction = (req, res) => {
+    const {username, value, envelopeId} = req.body;
+
+    pool.query(
+        'INSERT INTO transactions (username, value, envelope_id, time) values($1, $2, $3, NOW()) returning *', 
+        [username, value, envelopeId], 
+        (error, results) => {
+            if (error){
+                throw error;
+            }
+            res.status(200).json(results.rows);
+        }
+    )
+}
+
 module.exports = {
     getEnvelopes,
     createEnvelope,
     getEnvelopeById,
     updateEnvelope,
-    deleteEnvelope
+    deleteEnvelope, 
+    transaction,
 };
 

@@ -44,6 +44,7 @@ envelopesRouter.post('/transfer/:from/:to', (req, res, next) => {
     
 })
 
+envelopesRouter.post('/transaction', db.transaction);
 
 
 
